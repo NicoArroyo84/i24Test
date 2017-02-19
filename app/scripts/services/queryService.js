@@ -1,6 +1,6 @@
 /**
  * A module to retrieve queries via ajax
- * @module queryService
+ * @module queryServices
  */
 define(['./resources'], function(resources)
 {
