@@ -12,17 +12,25 @@ Also, the limit of queries a day is 100 so at some point the endpoint will no lo
 
 ### Prerequisities
 
-Nodejs npm and gulp to run it
+Nodejs npm need to be installed.
+To install gulp and bower if they are not installed yet
+npm install -g gulp
+npm install -g bower
 
 ### Installing
 
-Clone the git project.
+- Clone the git project.
+git clone https://github.com/NicoArroyo84/i24Test
 
-Install dependencies.
+- Check node,npm, gulp and bower are installed
+node --version && npm --version && gulp --version && bower --version
+
+- Install dependencies.
 ```
 npm install
 bower install
 ```
+- Run the project
 gulp serve
 ```
 
