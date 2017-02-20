@@ -20,19 +20,20 @@ npm install -g bower
 ### Installing
 
 - Clone the git project.
-
+```
 git clone https://github.com/NicoArroyo84/i24Test
-
+```
 - Check node,npm, gulp and bower are installed
-
+```
 node --version && npm --version && gulp --version && bower --version
-
+```
 - Install dependencies.
 ```
 npm install
 bower install
 ```
 - Run the project
+```
 gulp serve
 ```
 
