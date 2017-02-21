@@ -5,20 +5,20 @@ define([
     './services/utilsService'
 ], function(queryService, renderer, resources, utilsService)
 {
+    const btnWebSearch = document.getElementById('btn-web-search');
+    const btnImageSearch = document.getElementById('btn-image-search');
 
-    let btnWebSearch = document.getElementById('btn-web-search');
-    let btnImageSearch = document.getElementById('btn-image-search');
+    const queryStringInput = document.getElementById('query-string');
+    const btnSearch = document.getElementById('btn-search');
 
-    let queryStringInput = document.getElementById('query-string');
-    let btnSearch = document.getElementById('btn-search');
-
-    let containerWebSearch = document.getElementById('web-search-container');
-    let containerWebSeachList = document.getElementById('web-search-container-list');
+    const containerWebSearch = document.getElementById('web-search-container');
+    const containerWebSeachList = document.getElementById('web-search-container-list');
     
-    let containerImageSearch = document.getElementById('images-search-container');
+    const containerImageSearch = document.getElementById('images-search-container');
 
-    let referenceNodePagination = document.getElementById('pagination-prev');
-    
+    const referenceNodePagination = document.getElementById('pagination-prev');
+    const paginationPrevButton = document.getElementById('pagination-prev');
+    const paginationNextButton = document.getElementById('pagination-next');
     /**
     * integer which represents the value of the current page being zero-based.
     */
@@ -26,13 +26,29 @@ define([
   
     addEvents();
 
-
      /**
      * Add events to HTML elements and change some classes to interact with the user
      */
     function addEvents() {
+
         /**
-        * Performs a web query search and nitializes the current page. Also updates styles
+        * If enter key is pressed trigger the search
+        */
+        queryStringInput.addEventListener('keyup', (e) => {
+            if (e.keyCode === 13) {
+                triggerSearch();
+            }
+        });
+
+        /**
+        * Performs a wheter a web or image query search depending on which button is active
+        */
+        btnSearch.addEventListener('click', () => {
+            triggerSearch();
+        });
+
+        /**
+        * Performs a web query search and initializes the current page. Also updates styles
         */
         btnWebSearch.addEventListener('click', () => {
             containerWebSearch.classList.remove('hidden');
@@ -40,9 +56,9 @@ define([
 
             btnWebSearch.classList.add('active');
             btnImageSearch.classList.remove('active');      
-
-            searchQuery(false);  
             currentPage = 0;
+            searchQuery(false);  
+            
         });
 
         /**
@@ -54,38 +70,32 @@ define([
 
             btnWebSearch.classList.remove('active');
             btnImageSearch.classList.add('active');
-
+            currentPage = 0; 
             searchQuery(true);
-            currentPage = 0;  
-        });
-      
-        /**
-        * Performs a wheter a web or image query search depending on which button is active
-        */
-        btnSearch.addEventListener('click', () => {
-            let isImg = !containerImageSearch.classList.contains('hidden');
-            if (isImg) {
-                containerImageSearch.innerHTML = '';
-            }
-
-            searchQuery(isImg);
-            currentPage = 0;
+             
         });
 
         /**
         * Add event to next button to go to next page on web results
         */
-        document.getElementById('pagination-next').addEventListener('click', () => {
-            ++currentPage;
-            searchQuery(false);
+        paginationNextButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            //only 10 page due free API restrictions
+            if (currentPage < 9) {
+                ++currentPage;
+                searchQuery(false);
+            }
         });
 
         /**
         * Add event to prev button to go to previous page on web results
         */
-        document.getElementById('pagination-prev').addEventListener('click', () => {
-            --currentPage;
-            searchQuery(false);
+        paginationPrevButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage && containerWebSearch.innerHTML.length) {
+                --currentPage;
+                searchQuery(false);
+            }
         });
         
         /**
@@ -97,6 +107,20 @@ define([
                 searchQuery(false);
             }
         })
+    }
+    
+    /**
+    * Performs a new query 
+    */
+    function triggerSearch() {
+            let isImg = !containerImageSearch.classList.contains('hidden');
+            
+            //when requesting a new image search empty its container
+            if (isImg) {
+                containerImageSearch.innerHTML = '';
+            }
+            currentPage = 0;
+            searchQuery(isImg);
     }
 
     /**
@@ -132,6 +156,22 @@ define([
                                         window.addEventListener('scroll',  scrollImages);
                                     }
                                 }
+                        }).catch(function(error) {
+                            /**
+                             * Error handling
+                             */
+                            let errorMessage = error.message;
+
+                            if (!errorMessage) {
+                                errorMessage = 'An error occurred, please try again later';
+                            }
+
+                            if (isImg) {
+                                renderer.renderError(containerImageSearch, errorMessage);
+                            } else {
+                                renderer.renderError(containerWebSeachList, errorMessage);
+                            }
+                            
                         });
         }
     }
@@ -142,7 +182,7 @@ define([
     */
     function scrollImages() {
         let lastImage = document.getElementById('last-image');
-        if (lastImage && isElementInViewport(lastImage)) {
+        if (lastImage && utilsService.isElementInViewport(lastImage)) {
             ++currentPage;
             window.removeEventListener('scroll',  scrollImages);
             lastImage.removeAttribute('id');

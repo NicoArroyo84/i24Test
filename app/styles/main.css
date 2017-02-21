@@ -183,6 +183,16 @@ img {
   transition: transform .2s ease-in-out;
 }
 
+.alert-danger {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.logo24i {
+  background: transparent;
+  margin-left: 30px;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -1794,8 +1804,8 @@ pre code {
 .container-fluid {
   padding-right: 15px;
   padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+  margin-right: 25px;
+  margin-left: 25px;
 }
 .row {
   margin-right: -15px;

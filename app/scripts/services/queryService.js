@@ -41,10 +41,9 @@ define(['./resources'], function(resources)
             });
 
             xmlHttp.onerror = () => {
-                reject(new Error('A network error occurred'));
+                reject(new Error('A network error occurred. Please try again later.'));
             }
             
-
             xmlHttp.send();
         });
         

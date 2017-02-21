@@ -135,6 +135,26 @@ define([], function()
         /** Add id value to the last img element to control the dynamic loading of images when scrolling */
         resultElement.setAttribute('id', 'last-image');
     });
+
+    /**
+     * Renders error message
+     * @param {container} containerWebSearch - the container where the error is displayed
+     * @param {string} errorMessage - the error message
+     */
+    renderer.renderError = ((container, errorMessage) => {
+        let pElement = document.createElement('p');
+        pElement.textContent = errorMessage;
+        pElement.classList.add('alert','alert-danger');
+
+        //deletes error message after 5 seconds
+        setTimeout(function() {
+            pElement.parentNode.removeChild(pElement);
+        }, 5000);
+        
+        //empty previous elements in the container
+        container.innerHTML = '';
+        container.appendChild(pElement);
+    });
     
 
     return renderer;
