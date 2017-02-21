@@ -23,6 +23,10 @@ npm install -g bower
 ```
 git clone https://github.com/NicoArroyo84/i24Test
 ```
+- Get in to the cloned folder.
+```
+cd i24Test
+```
 - Check node,npm, gulp and bower are installed
 ```
 node --version && npm --version && gulp --version && bower --version
